@@ -39,8 +39,21 @@ func authenticateHandler(c *Client, cookie string) (func() (UserInfo, error), er
 
 		switch resp.StatusCode {
 		case http.StatusOK:
-			var userInfo UserInfo
-			json.NewDecoder(resp.Body).Decode(&userInfo)
+			var raw struct {
+				ID          int64  `json:"id"`
+				Name        string `json:"name"`
+				Username    string `json:"username"`
+				DisplayName string `json:"displayName"`
+			}
+			json.NewDecoder(resp.Body).Decode(&raw)
+
+			userInfo := UserInfo{ID: raw.ID, Username: raw.Username, DisplayName: raw.DisplayName}
+			if userInfo.Username == "" {
+				userInfo.Username = raw.Name
+			}
+			if userInfo.Username == "" {
+				userInfo.Username = raw.DisplayName
+			}
 
 			return userInfo, nil
 		case http.StatusUnauthorized:

@@ -22,7 +22,7 @@ end
 local function checkConnectionStatus(self: Connection)
 	local connected, data = pcall(get, self._port, "/v1/events")
 	if not connected then
-		connected, data = pcall(get, self._port, "/")
+		connected, data = pcall(get, self._port, "/v1/health")
 	end
 	if not connected then
 		if self.onDisconnect then
@@ -68,16 +68,23 @@ export type Connection = {
 }
 
 function Connection.probe(port: number): (boolean, string?)
+	-- Only accept a real Folk host. Any other local service (e.g. something on 8080) must not match.
 	local ok, data = pcall(get, port, "/v1/health")
-	if ok then
-		return true, data
+	if not ok then
+		return false, nil
 	end
-	ok, data = pcall(get, port, "/")
-	return ok, if ok then data else nil
+	local decodedOk, decoded = pcall(HttpService.JSONDecode, HttpService, data)
+	if decodedOk and typeof(decoded) == "table" then
+		local health = decoded :: any
+		if health.ok == true and typeof(health.name) == "string" and string.find(health.name, "Reuploader", 1, true) then
+			return true, data
+		end
+	end
+	return false, nil
 end
 
 function Connection.scan(preferred: number): (number?, string?)
-	local ports = { preferred, 38073, 8080, 3000 }
+	local ports = { preferred, 38073 }
 	for extra = 38070, 38090 do
 		table.insert(ports, extra)
 	end
