@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/kartFr/Asset-Reuploader/internal/files"
@@ -14,10 +15,16 @@ import (
 var (
 	config        = make(map[string]string, 0)
 	defaultConfig = map[string]string{
-		"port":         "38073",
-		"cookie_file":  "cookie.txt",
-		"api_key":      "",
-		"api_key_file": "api-key.txt",
+		"port":           "38073",
+		"cookie_file":    "cookie.txt",
+		"api_key":        "",
+		"api_key_file":   "api-key.txt",
+		"bind":           "127.0.0.1",
+		"auto_studio":    "true",
+		"last_place_id":  "",
+		"last_creator_id": "",
+		"last_is_group":  "false",
+		"last_place_name": "",
 	}
 )
 
@@ -82,6 +89,18 @@ func Get(key string) string {
 
 func Set(key string, value string) {
 	config[key] = value
+}
+
+func PersistStudio(placeID, creatorID int64, isGroup bool, placeName string) {
+	Set("last_place_id", strconv.FormatInt(placeID, 10))
+	Set("last_creator_id", strconv.FormatInt(creatorID, 10))
+	if isGroup {
+		Set("last_is_group", "true")
+	} else {
+		Set("last_is_group", "false")
+	}
+	Set("last_place_name", placeName)
+	_ = Save()
 }
 
 func Save() error {

@@ -75,7 +75,7 @@ export type Split = {
 
 function Split.new(parent: GuiObject): Split
     local instance = Instance.new("Frame")
-    instance.Size = UDim2.new(1, 0, 0, 20)
+    instance.Size = UDim2.new(1, 0, 0, 28)
     instance.BackgroundTransparency = 1
     instance.Parent = parent
 

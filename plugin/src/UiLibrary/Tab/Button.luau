@@ -2,53 +2,42 @@
 local Button = {}
 
 local Theme = require("../Theme")
-
-local asset = script.Parent.Parent.Assets.Button
+local Widgets = require("../Widgets")
 
 local function ColorSelected(self: Button)
-	local theme = Theme.get()
-	local instance = self.instance
-	instance.BackgroundColor3 = theme.SelectedColor
+	self.instance.BackgroundColor3 = Theme.get().SelectedColor
 end
 
 local function ColorUnselected(self: Button)
-	local theme = Theme.get()
-	local instance = self.instance
-	instance.BackgroundColor3 = theme.UnselectedColor
+	self.instance.BackgroundColor3 = Theme.get().UnselectedColor
 end
 
 local function UpdateTheme(self: Button)
-    Theme.updateText(self.instance, true)
-
-    local theme = Theme.get()
-    self.instance.BackgroundColor3 = theme.UnselectedColor
+	Theme.updateText(self.instance, true)
+	self.instance.BackgroundColor3 = Theme.get().UnselectedColor
 end
 
 local function Destroy(self: Button)
-    self.instance:Destroy()
-    
-	table.clear(self :: { any })
+	self.instance:Destroy()
+	table.clear(self :: any)
 end
 
 export type Button = {
-	instance: typeof(asset),
-
+	instance: TextButton,
 	ColorSelected: typeof(ColorSelected),
 	ColorUnselected: typeof(ColorUnselected),
-    UpdateTheme: typeof(UpdateTheme),
+	UpdateTheme: typeof(UpdateTheme),
 	Destroy: typeof(Destroy),
 }
 
 function Button.new(parent: GuiObject, text: string, callback: () -> (), autoColor: boolean?): Button
-    local instance = asset:Clone()
-    instance.Text = text
+	local instance = Widgets.textButton(parent, text, 28)
 
 	local self: Button = {
 		instance = instance,
-
 		ColorSelected = ColorSelected,
 		ColorUnselected = ColorUnselected,
-        UpdateTheme = UpdateTheme,
+		UpdateTheme = UpdateTheme,
 		Destroy = Destroy,
 	}
 
@@ -57,7 +46,9 @@ function Button.new(parent: GuiObject, text: string, callback: () -> (), autoCol
 	end
 
 	instance.MouseButton1Down:Connect(function()
-		if autoColor then self:ColorSelected() end
+		if autoColor then
+			self:ColorSelected()
+		end
 		callback()
 	end)
 
@@ -65,14 +56,11 @@ function Button.new(parent: GuiObject, text: string, callback: () -> (), autoCol
 		local function colorUnselected()
 			self:ColorUnselected()
 		end
-
 		instance.MouseButton1Up:Connect(colorUnselected)
 		instance.MouseLeave:Connect(colorUnselected)
 	end
 
-    self:UpdateTheme()
-    instance.Parent = parent
-
+	self:UpdateTheme()
 	return self
 end
 

@@ -31,18 +31,24 @@ func NewReuploadHandlerWithType(assetType string, c *roblox.Client, r *request.R
 	return func() error {
 		ctx := context.New(c, resp)
 
-		console.ClearScreen()
+		if !console.LiveUI() {
+			console.ClearScreen()
+		}
 
 		fmt.Println("Getting current place details...")
 		req, err := request.FromRawRequest(c, r)
-		console.ClearScreen()
+		if !console.LiveUI() {
+			console.ClearScreen()
+		}
 		if err != nil {
 			return err
 		}
 
 		fmt.Println("Checking if account can edit universe...")
 		err = permissions.CanEditUniverse(ctx, req)
-		console.ClearScreen()
+		if !console.LiveUI() {
+			console.ClearScreen()
+		}
 		if err != nil {
 			clientutils.GetNewCookie(ctx, req, err.Error())
 		}

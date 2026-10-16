@@ -14,6 +14,7 @@ local meshSettings: { [string]: string } = {
 
 return function(ui: UiLibrary.Ui, plugin: Plugin)
 	local tab = ui:CreateTab("Mesh")
+	tab:CreateLabel("Needs an Open Cloud API key on the Folk host. Toggles pick which mesh classes to scan.")
 
     if not ApiDump.get() then
         local thread = coroutine.running()

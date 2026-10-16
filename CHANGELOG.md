@@ -1,3 +1,12 @@
+# [2.0.0] Folk Reuploader
+
+- Rebranded host + plugin as Folk Reuploader.
+- Live terminal dashboard with connection pulse and Studio status.
+- Auto-connect from Studio (port scan, `/v1/health`, `/v1/studio/hello`).
+- Autofill port, place, creator, group, cookie, and API key (files, env, last session).
+- Terminal-only mode: `FolkReuploader --cli`.
+- Plugin Folk theme, status bar, Studio tab, default settings.
+
 # [1.4.1](https://github.com/kartFr/Asset-Reuploader/releases/tag/1.4.1) - September 15th, 2025
 - Got rid of atomic writing (very naive to put that in lmaooo)
 - (actually) Fixed mesh changing colors.

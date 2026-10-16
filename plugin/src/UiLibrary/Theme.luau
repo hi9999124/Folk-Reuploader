@@ -43,7 +43,26 @@ local HttpService = game:GetService("HttpService")
 
 local currentTheme: Theme
 local plugin: Plugin
-local themes: RawTheme = { Studio = { Name = "Studio" } }
+local themes: RawTheme = {
+	Studio = { Name = "Studio" },
+	Folk = {
+		Name = "Folk",
+		Font = { "Gotham", "Medium", "Normal" },
+		TextSize = 14,
+		TextColor = { 240, 234, 224 },
+		DimmedTextColor = { 168, 158, 146 },
+		StrokeTransparency = 1,
+		BorderColor = { 232, 168, 88 },
+		BackgroundColor = { 14, 14, 18 },
+		ForegroundColor = { 22, 22, 28 },
+		UnselectedColor = { 36, 36, 44 },
+		SelectedColor = { 232, 168, 88 },
+		ToggleBackgroundColor = { 232, 168, 88 },
+		InputColor = { 240, 234, 224 },
+		TipColor = { 232, 168, 88 },
+		XColor = { 240, 234, 224 },
+	},
+}
 
 type RawTheme = { [string]: any }
 
@@ -98,7 +117,7 @@ end
 
 local function getFont(rawThemeFont: { any } | string): Font
 	if type(rawThemeFont) == "string" then return Font.fromName(rawThemeFont) end
-	assert(#rawThemeFont > 3, "font options is too large")
+	assert(#rawThemeFont <= 3, "font options is too large")
 
 	local name, weight, style = table.unpack(rawThemeFont)
 		
@@ -204,7 +223,7 @@ function Theme.init(currentPlugin: Plugin)
 		return
 	end
 
-	Theme.set("Studio")
+	Theme.set("Folk")
 end
 
 function Theme.getThemes(): { [string]: RawTheme }

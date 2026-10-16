@@ -113,19 +113,36 @@ return function(plugin: Plugin, ui: UiLibrary.Ui, filterOptions: AssetIdFilter.F
         return
     end
 
-    local connection, response = Connection.new(plugin:GetSetting("Port"))
+    local port = plugin:GetSetting("Port")
+    if not Connection.probe(port) then
+        local found = Connection.scan(port)
+        if found then
+            port = found
+            plugin:SetSetting("Port", port)
+        end
+    end
+
+    local connection, response = Connection.new(port)
     if not connection then
-        ui:Notify("Notification", "Unable to connect to localhost. Did you start the executable?" )
+        ui:Notify("Folk", "Unable to reach Folk. Start the executable — it will auto-connect to Studio.")
         busy = false
         return
     end
+    connection:Hello(HttpService:JSONEncode({
+        pluginVersion = currentVersion,
+        placeId = placeId,
+        creatorId = creatorId,
+        isGroup = isGroup,
+        placeName = game.Name,
+        port = port,
+    }))
 
     local function onDataRecieved(data: string)
         local success, result = pcall(HttpService.JSONDecode, HttpService, data)
         if not success then
             if data ~= "done" then return end
             
-            ui:Notify("Notification", "Finished reuploading all ids.")
+            ui:Notify("Folk", "Finished reuploading all ids.")
             busy = false
             connection:Destroy()
             return
@@ -138,7 +155,7 @@ return function(plugin: Plugin, ui: UiLibrary.Ui, filterOptions: AssetIdFilter.F
 
     connection.onDataRecieved = onDataRecieved
     connection.onDisconnect = function()
-        ui:Notify("Notification", "Disconnected from localhost. (Try reconnecting)")
+        ui:Notify("Folk", "Disconnected from Folk host. It will auto-reconnect.")
         busy = false
     end
 
@@ -154,7 +171,10 @@ return function(plugin: Plugin, ui: UiLibrary.Ui, filterOptions: AssetIdFilter.F
         exportJson = plugin:GetSetting("ExportJSON")
     }
     
-    local success, statusCode = connection:Send("/reupload", HttpService:JSONEncode(request))
+    local success, statusCode = connection:Send("/v1/reupload", HttpService:JSONEncode(request))
+    if not success then
+        success, statusCode = connection:Send("/reupload", HttpService:JSONEncode(request))
+    end
     if not success then
         local message: string = (StatusCodes :: any)[statusCode] or ("Unable to send data to localhost.\n" .. statusCode)
         ui:Notify("Notification", message)

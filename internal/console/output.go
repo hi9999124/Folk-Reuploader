@@ -7,6 +7,10 @@ import (
 )
 
 func ClearScreen() {
+	if LiveUI() {
+		os.Stdout.WriteString("\x1b[2J\x1b[H")
+		return
+	}
 	var cmd *exec.Cmd
 	switch runtime.GOOS {
 	case "windows":

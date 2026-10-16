@@ -7,7 +7,8 @@ local Selection = game:GetService("Selection")
 
 return function(ui: UiLibrary.Ui, plugin: Plugin)
 	local tab = ui:CreateTab("Animation")
-	
+	tab:CreateLabel("Scans the place, sends ids to Folk, then remaps animations in Studio.")
+
 	tab:CreateButton("Reupload", function()
 		local filter = getFilterOptions(plugin, game:GetDescendants())
 		table.insert(filter.WhitelistedInstances, "Animation")

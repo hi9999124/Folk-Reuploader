@@ -7,6 +7,7 @@ local Selection = game:GetService("Selection")
 
 return function(ui: UiLibrary.Ui, plugin: Plugin)
     local tab = ui:CreateTab("Sound")
+    tab:CreateLabel("Sends sounds to Folk, then remaps Sound instances in this place.")
 
     tab:CreateButton("Reupload", function()
         local filter = getFilterOptions(plugin, game:GetDescendants())

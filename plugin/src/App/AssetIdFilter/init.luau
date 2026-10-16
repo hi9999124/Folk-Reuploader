@@ -1,8 +1,8 @@
 --!strict
 local AssetIdFilter = {}
 
-local getAssetIds = require("./AssetIdFilter/GetAssetIds")
-local changeIds = require("./AssetIdFilter/ChangeIds")
+local getAssetIds = require("./GetAssetIds")
+local changeIds = require("./ChangeIds")
 
 export type FilterOptions = getAssetIds.FilterOptions
 

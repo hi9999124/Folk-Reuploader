@@ -65,4 +65,13 @@ return function(ui: UiLibrary.Ui, plugin: Plugin)
     textBox:GetPropertyChangedSignal("Text"):Connect(function() 
         textBox.Text = string.gsub(textBox.Text, "%D", "") 
     end)
+
+	if game.PlaceId ~= 0 then
+		local stringPlaceId = tostring(game.PlaceId)
+		if not placeList.elements[stringPlaceId] then
+			local element = placeList:CreateElement(stringPlaceId)
+			element:AddDestroyButton()
+			element.instance.TextLabel.Text = `({game.PlaceId}) {game.Name} [auto]`
+		end
+	end
 end

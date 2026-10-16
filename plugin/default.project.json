@@ -1,5 +1,5 @@
 {
-    "name": "AssetReuploader",
+    "name": "FolkReuploader",
     "tree": {
         "$className": "Folder",
         "Plugin": {

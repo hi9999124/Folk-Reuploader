@@ -1,6 +1,6 @@
 --!strict
-local UiLibrary = require("./Plugin/UiLibrary")
-local App = require("./Plugin/App")
+local UiLibrary = require("./UiLibrary")
+local App = require("./App")
 
 local RunService = game:GetService("RunService")
 
@@ -8,23 +8,39 @@ if not RunService:IsEdit() then
 	return
 end
 
-local currentVersion = script.Parent.Version.Value
-local topbarTitle = "Bacfr Asset Reuploader 1.7.2"
-
-local toolbar = plugin:CreateToolbar("Asset Reuploader")
+local VERSION = script.Parent.Parent.Version.Value
+local toolbar = plugin:CreateToolbar("Folk Reuploader")
 local widget = plugin:CreateDockWidgetPluginGui(
-	"Asset Reuploader",
-	DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, true, 500, 250, 500, 250)
+	"FolkReuploader",
+	DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, true, false, 560, 420, 420, 320)
 )
 
-local toggleButton = toolbar:CreateButton("Toggle Gui", "Toggle gui visibility", "rbxassetid://83178708216253")
-toggleButton.Click:Connect(function() widget.Enabled = not widget.Enabled end)
+local toggleButton = toolbar:CreateButton("Folk", "Toggle Folk Reuploader", "rbxassetid://83178708216253")
+toggleButton.Click:Connect(function()
+	widget.Enabled = not widget.Enabled
+end)
 
-widget:GetPropertyChangedSignal("Enabled"):Connect(function() toggleButton:SetActive(widget.Enabled) end)
-widget.Title = `Bacfr 1.7.2`
+widget:GetPropertyChangedSignal("Enabled"):Connect(function()
+	toggleButton:SetActive(widget.Enabled)
+end)
+widget.Title = `Folk Reuploader {VERSION}`
 
-if plugin:GetSetting("Port") == nil then
-	plugin:SetSetting("Port", 38073)
+local defaults = {
+	Port = 38073,
+	ExportJSON = false,
+	AutoConnect = true,
+	StrVals = true,
+	Scripts = true,
+	NumVals = true,
+	MeshParts = true,
+	SpecialMeshes = true,
+	CharacterMeshes = true,
+}
+
+for key, value in defaults do
+	if plugin:GetSetting(key) == nil then
+		plugin:SetSetting(key, value)
+	end
 end
 
 local ui = UiLibrary.new(widget, plugin)

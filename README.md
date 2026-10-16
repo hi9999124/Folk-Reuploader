@@ -1,44 +1,59 @@
 <div align="center">
-        <img src="https://github.com/user-attachments/assets/4e753b87-3069-4a8f-824b-69fc910584c5" alt="Icon" />
-    <br><br>
-    <a href="https://github.com/kartFr/Asset-Reuploader/releases/latest"><img src="https://img.shields.io/github/downloads/kartfr/Asset-Reuploader/total?color=yellow" alt="Latest download" /></a>
-    <a href="https://github.com/kartFr/Asset-Reuploader/releases/latest"><img src="https://img.shields.io/github/v/release/kartfr/Asset-Reuploader?color=yellow" alt="Latest release" /></a>
-    <a href="https://discord.gg/XTEtUqPTat"><img src="https://img.shields.io/discord/1238572493925646347?label=discord&logo=discord&logoColor=white&color=yellow" alt="Discord" /></a>
-    <a href="https://github.com/kartFr/Asset-Reuploader?tab=GPL-3.0-1-ov-file"><img src="https://img.shields.io/github/license/kartFr/Asset-Reuploader?color=yellow" alt="License" /></a>
+
+# Folk Reuploader
+
+A modern fork of [Asset-Reuploader](https://github.com/bacfr/Asset-Reuploader) — Roblox asset reupload host with a live terminal, auto Studio link, and a terminal-only mode.
+
 </div>
 
-#
+Folk talks to a Roblox Studio plugin over localhost. Use it when you need copies of assets on an account that can actually publish them (your own games, groups you edit, unpublished inventory you already own).
 
-Roblox asset reuploader using a [roblox plugin](https://create.roblox.com/store/asset/89096096219225/Asset-Reuploader) and go.
+### What Folk adds
 
-Intended to reupload assets since you are unable to use assets if another account owns them.
+- **Live terminal** — amber dashboard, pulse bars, signed-in account, Studio link status
+- **Auto Studio connection** — plugin scans ports, handshakes `/v1/studio/hello`, reconnects if the host restarts
+- **Autofill** — place id, creator id, group flag, port, API key, and cookie from files/env/last Studio session
+- **Modern HTTP** — `/v1/health`, `/v1/events`, `/v1/reupload`, bound to `127.0.0.1` by default
+- **Terminal-only** — `FolkReuploader --cli` with no plugin
 
-### Community
-
-Join the [discord](https://discord.gg/XTEtUqPTat) and interact with the community. We have:
-
-- Reuploader themes
-- Reuploader support
-- Coding support
-- Early access to updates when supporting me
-- Advertise your game/discord server
-
-### Currently supported assets
+### Supported assets
 
 - Animations
-- Audio (paid, join discord)
-- Meshes (paid)
+- Audio
+- Meshes
 
-## Contributing
+### Host (plugin + dashboard)
 
-ALL contributions are welcome. Feel free to make a pull/fork at any time. Please read the [contribution guide](https://github.com/kartFr/Asset-Reuploader/blob/main/CONTRIBUTING.md).
+1. Run `FolkReuploader` (or `go run ./cmd/assetreuploader`).
+2. Paste `.ROBLOSECURITY` once (saved to `cookie.txt`). Open Cloud API key is saved to `api-key.txt`.
+3. Install the plugin (`rojo build plugin`) and open a **published** place in Studio.
+4. Folk auto-connects. Hit Reupload on Animation / Sound / Mesh.
 
-The [discord](https://discord.gg/XTEtUqPTat) does have a dedicated suggestions channel. If you do have a feature request please do put it in there. But, you do have free will, so choose whichever.
+Environment autofill: `FOLK_ROBLOSECURITY` / `ROBLOSECURITY`, `FOLK_API_KEY` / `ROBLOX_API_KEY`.
 
-If you do need help with anything from stupid questions(pls no) to setting up a fork feel free to DM me on discord, my tag is alekfart.
+### Terminal only
+
+```text
+FolkReuploader --cli
+FolkReuploader --cli --type Animation --ids 1,2,3 --place 123 --creator 456
+FolkReuploader --cli --type Mesh --ids 9 --place 123 --creator 456 --group --export
+```
+
+If you already connected the plugin once, `--place` and `--creator` fill from `config.ini`.
+
+### Headless host
+
+```text
+FolkReuploader --no-tui --port 38073
+```
+
+### Build
+
+```text
+go build -ldflags="-X main.CompatiblePluginVersion=2.0.0" -o FolkReuploader.exe ./cmd/assetreuploader
+rojo build plugin --output FolkReuploader2.0.0.rbxm
+```
 
 ## License
 
-Copyright (c) 2024, kartFr
-
-Licensed under the [GPL-3.0](https://github.com/kartFr/Asset-Reuploader/blob/main/LICENSE.txt) license.
+Forked from Asset-Reuploader (kartFr / bacfr), GPL-3.0. Folk Reuploader is a modified version of that work.

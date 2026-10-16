@@ -43,12 +43,12 @@ jobs:
             run: echo "pluginVersion=$(cat plugin/Version.txt)" >> $GITHUB_ENV
     
           - name: Build plugin
-            run: rojo build plugin --output AssetReuploader${{ env.pluginVersion }}.rbxm
+            run: rojo build plugin --output FolkReuploader${{ env.pluginVersion }}.rbxm
     
           - name: Upload to release
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            run: gh release upload ${{ github.event.inputs.version }} AssetReuploader${{ env.pluginVersion }}.rbxm
+            run: gh release upload ${{ github.event.inputs.version }} FolkReuploader${{ env.pluginVersion }}.rbxm
 
     build:
         needs: ["create-release"]
@@ -88,9 +88,9 @@ jobs:
               VERSION=$(cat plugin/Version.txt | tr -d '\r\n')
 
               env GOARCH=${{ matrix.arch }} go build \
-              -ldflags="-X main.CompatiblePluginVersion=${VERSION}" \
-              -o AssetReuploader${{ matrix.os == 'windows-latest' && '.exe' || '' }} \
-              ./cmd/...
+              -ldflags="-s -w -X main.CompatiblePluginVersion=${VERSION}" \
+              -o FolkReuploader${{ matrix.os == 'windows-latest' && '.exe' || '' }} \
+              ./cmd/assetreuploader
           
           - name: Upload to release
             shell: bash
@@ -98,9 +98,9 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
             run: |
               if [ "${{ matrix.os }}" = "windows-latest" ]; then
-                7z a -sdel AssetReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip CHANGELOG.md config.ini LICENSE ./AssetReuploader*
+                7z a -sdel FolkReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip CHANGELOG.md config.ini LICENSE ./FolkReuploader*
               else
-                zip -jr AssetReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip CHANGELOG.md config.ini LICENSE ./AssetReuploader*
+                zip -jr FolkReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip CHANGELOG.md config.ini LICENSE ./FolkReuploader*
               fi
             
-              gh release upload ${{ github.event.inputs.version }} AssetReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip
+              gh release upload ${{ github.event.inputs.version }} FolkReuploader-${{ github.event.inputs.version }}-${{ matrix.name }}.zip

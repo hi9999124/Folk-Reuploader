@@ -6,6 +6,20 @@ local HttpService = game:GetService("HttpService")
 
 local PREMADE_THEMES = {
 	{
+		Name = "Folk Gold",
+		BackgroundColor = { 14, 14, 18 },
+		ForegroundColor = { 22, 22, 28 },
+		BorderColor = { 232, 168, 88 },
+		UnselectedColor = { 36, 36, 44 },
+		SelectedColor = { 232, 168, 88 },
+		TextColor = { 240, 234, 224 },
+		DimmedTextColor = { 168, 158, 146 },
+		InputColor = { 240, 234, 224 },
+		TipColor = { 232, 168, 88 },
+		ToggleBackgroundColor = { 232, 168, 88 },
+		StrokeTransparency = 1,
+	},
+	{
 		Name = "Midnight",
 		BackgroundColor = { 16, 18, 27 },
 		ForegroundColor = { 27, 30, 43 },
