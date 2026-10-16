@@ -1,10 +1,10 @@
 --!strict
 local List = {}
 
-local Input = require("../Input")
-local Theme = require("../../Theme")
-local ListElement = require("./ListElement")
-local Widgets = require("../../Widgets")
+local Input = require("./Input")
+local Theme = require("../Theme")
+local ListElement = require("./List/ListElement")
+local Widgets = require("../Widgets")
 
 local function Get(self: List): { string }
 	local values = {}

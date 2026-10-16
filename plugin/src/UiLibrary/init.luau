@@ -1,10 +1,10 @@
 --!strict
 local UiLibrary = {}
 
-local Tab = require("./Tab")
-local Theme = require("./Theme")
-local Tip = require("./Tip")
-local Widgets = require("./Widgets")
+local Tab = require("./UiLibrary/Tab")
+local Theme = require("./UiLibrary/Theme")
+local Tip = require("./UiLibrary/Tip")
+local Widgets = require("./UiLibrary/Widgets")
 
 local TOPBAR_TITLE = "Folk Reuploader"
 

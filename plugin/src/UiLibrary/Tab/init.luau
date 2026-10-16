@@ -1,12 +1,12 @@
 --!strict
 local Tab = {}
 
-local Button = require("./Button")
-local Label = require("./Label")
-local List = require("./List")
-local Split = require("./Split")
-local Toggle = require("./Toggle")
-local Widgets = require("../Widgets")
+local Button = require("./Tab/Button")
+local Label = require("./Tab/Label")
+local List = require("./Tab/List")
+local Split = require("./Tab/Split")
+local Toggle = require("./Tab/Toggle")
+local Widgets = require("./Widgets")
 
 local function CreateButton(self: Tab, text: string, callback: () -> ()): Button.Button
 	local button = Button.new(self.instance, text, callback)

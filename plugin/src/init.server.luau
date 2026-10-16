@@ -1,6 +1,6 @@
 --!strict
-local UiLibrary = require("./UiLibrary")
-local App = require("./App")
+local UiLibrary = require("./Plugin/UiLibrary")
+local App = require("./Plugin/App")
 
 local RunService = game:GetService("RunService")
 
@@ -8,7 +8,7 @@ if not RunService:IsEdit() then
 	return
 end
 
-local VERSION = script.Parent.Parent.Version.Value
+local VERSION = script.Parent.Version.Value
 local toolbar = plugin:CreateToolbar("Folk Reuploader")
 local widget = plugin:CreateDockWidgetPluginGui(
 	"FolkReuploader",
